@@ -1,3 +1,6 @@
+include_recipe 'java'
+include_recipe 'runit'
+package 'bind-utils'
 
 group 'tomcat'
 user 'tomcat' do
@@ -22,9 +25,6 @@ execute "tomcat_permissions" do
   action :nothing
   notifies :restart, "service[tomcat]", :delayed
 end
-
-include_recipe "runit"
-
 
 runit_service 'tomcat' do
   template_name 'tomcat'

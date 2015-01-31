@@ -6,10 +6,13 @@
 #
 # All rights reserved - Do Not Redistribute
 #
+include_recipe 'dnsmasq'
 include_recipe "runit::default"
+
 node.set['consul']['service_mode'] = 'client'
 node.set['consul']['bind_addr'] = '192.168.33.30'
 node.set['consul']['client_address'] = '192.168.33.30'
+node.set['consul']['node_name']	=  "ta-api-#{node['consul']['client_address']}"
 
 include_recipe "test_template::_tomcat"
 

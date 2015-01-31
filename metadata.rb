@@ -6,6 +6,8 @@ description      'Installs/Configures test_template'
 long_description 'Installs/Configures test_template'
 version          '0.1.0'
 
+depends 'java'
+depends 'dnsmasq'
 depends 'now'
 depends 'haproxy'
 depends 'runit'

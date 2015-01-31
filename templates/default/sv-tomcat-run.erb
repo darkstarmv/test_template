@@ -1,0 +1,9 @@
+#!/bin/sh
+
+
+export JAVA_OPTS="$JAVA_OPTS <%= @options[:java_opts] %>"
+
+exec 2>&1
+exec chpst \
+  -u <%= @options[:user] %> \
+  /opt/tomcat7/bin/catalina.sh run

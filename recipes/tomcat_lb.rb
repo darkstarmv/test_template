@@ -6,12 +6,13 @@
 #
 # All rights reserved - Do Not Redistribute
 #
-include_recipe 'dnsmasq'
+include_recipe 'test_template::base'
 
 node.set['consul']['service_mode'] = 'client'
 node.set['consul']['bind_addr'] = '192.168.33.20'
-node.set['consul']['client_address'] = '192.168.33.20'
-node.set['consul']['node_name'] =  "ta-api-lb-#{node['consul']['client_address']}"
+node.set['consul']['advertise_addr'] = '192.168.33.20'
+node.set['consul']['client_address'] = '0.0.0.0'
+node.set['consul']['node_name'] =  "ta-api-lb-#{node['consul']['advertise_addr']}"
 
 include_recipe "consul::default"
 include_recipe "consul-template::default"

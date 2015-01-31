@@ -1,6 +1,5 @@
 include_recipe 'java'
 include_recipe 'runit'
-package 'bind-utils'
 
 group 'tomcat'
 user 'tomcat' do

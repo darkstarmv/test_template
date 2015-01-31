@@ -15,11 +15,9 @@ suites:
       network:
         - ["private_network", {ip: "192.168.33.10"}]
     run_list:
-      - recipe[apt::default]
       - recipe[consul::default]
       - recipe[consul::ui]
       - recipe[consul-template::default]
-      - recipe[consul-test-helpers::consul-template]
     attributes:
       consul:
         service_mode: server
@@ -37,10 +35,8 @@ suites:
       network:
         - ["private_network", {ip: "192.168.33.20"}]
     run_list:
-      - recipe[apt::default]
       - recipe[consul::default]
       - recipe[consul-template::default]
-      - recipe[consul-test-helpers::consul-template]
       - recipe[test_template]
     attributes:
       consul:
@@ -50,6 +46,26 @@ suites:
         bind_interface: 'eth1'
         bind_addr: '192.168.33.20'
         client_address: '192.168.33.20'
+      consul_template:
+        config:
+          consul: '127.0.0.1:8500'
+  - name: consul-client-tomcat
+    driver:
+      name: vagrant
+      network:
+        - ["private_network", {ip: "192.168.33.30"}]
+    run_list:
+      - recipe[consul::default]
+      - recipe[consul-template::default]
+      - recipe[test_template::tomcat]
+    attributes:
+      consul:
+        service_mode: client
+        servers: [ '192.168.33.10' ]
+        serve_ui: true
+        bind_interface: 'eth1'
+        bind_addr: '192.168.33.30'
+        client_address: '192.168.33.30'
       consul_template:
         config:
           consul: '127.0.0.1:8500'

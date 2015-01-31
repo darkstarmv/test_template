@@ -13,6 +13,9 @@ Berksfile.lock
 
 # Bundler
 Gemfile.lock
+.vagrant
+/cookbooks
+
 bin/*
 .bundle/*
 

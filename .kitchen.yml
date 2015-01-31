@@ -9,63 +9,33 @@ platforms:
   - name: centos-6.5
 
 suites:
-  - name: consul-server
+  - name: cserver
     driver:
       name: vagrant
       network:
         - ["private_network", {ip: "192.168.33.10"}]
     run_list:
-      - recipe[consul::default]
-      - recipe[consul::ui]
-      - recipe[consul-template::default]
+      - recipe[test_template::server]
     attributes:
       consul:
-        service_mode: server
         servers: [ '192.168.33.10' ]
-        serve_ui: true
-        bind_interface: 'eth1'
-        bind_addr: '192.168.33.10'
-        client_address: '192.168.33.10'
-      consul_template:
-        config:
-          consul: '127.0.0.1:8500'
-  - name: consul-client
+  - name: ta-api-lb
     driver:
       name: vagrant
       network:
         - ["private_network", {ip: "192.168.33.20"}]
     run_list:
-      - recipe[consul::default]
-      - recipe[consul-template::default]
-      - recipe[test_template]
+      - recipe[test_template::tomcat_lb]
     attributes:
       consul:
-        service_mode: client
         servers: [ '192.168.33.10' ]
-        serve_ui: true
-        bind_interface: 'eth1'
-        bind_addr: '192.168.33.20'
-        client_address: '192.168.33.20'
-      consul_template:
-        config:
-          consul: '127.0.0.1:8500'
-  - name: consul-client-tomcat
+  - name: ta-api
     driver:
       name: vagrant
       network:
         - ["private_network", {ip: "192.168.33.30"}]
     run_list:
-      - recipe[consul::default]
-      - recipe[consul-template::default]
       - recipe[test_template::tomcat]
     attributes:
       consul:
-        service_mode: client
         servers: [ '192.168.33.10' ]
-        serve_ui: true
-        bind_interface: 'eth1'
-        bind_addr: '192.168.33.30'
-        client_address: '192.168.33.30'
-      consul_template:
-        config:
-          consul: '127.0.0.1:8500'

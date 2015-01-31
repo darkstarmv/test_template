@@ -6,18 +6,20 @@
 #
 # All rights reserved - Do Not Redistribute
 #
+include_recipe "runit::default"
 node.set['consul']['service_mode'] = 'client'
-node.set['consul']['bind_address'] = 'eth1'
-node.set['consul']['client_interface'] = 'eth1'
+node.set['consul']['bind_addr'] = '192.168.33.30'
+node.set['consul']['client_address'] = '192.168.33.30'
 
-include_recipe "tomcat"
+include_recipe "test_template::_tomcat"
+
 
 include_recipe "consul::default"
 include_recipe "consul-template::default"
 
 consul_service_def 'ta-tomcat-api' do
   port 8080
-  tags ['_sip._udp']
+  tags ['_sip._tcp']
   check(
     interval: '10s',
     script: 'curl localhost:8080 >/dev/null 2>&1'
@@ -27,7 +29,7 @@ end
 
 #consul_service_def 'ta-api-tomcat'
 #  port 8080
-#  tags ['_sip._udp']
+#  tags ['_sip._tcp']
 #:wend
 #  check(
 #    interval: '10s',

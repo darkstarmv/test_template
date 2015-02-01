@@ -26,10 +26,10 @@ backend servers-http
   balance            roundrobin
   option httpchk GET /
   option  httplog
-{{range service "primary.ta-tomcat-api"}}
+{{range service "primary.ta-api"}}
     server {{.Node}} {{.Address}}:{{.Port}} weight 1 check port {{.Port}}
 {{end}}
-{{range service "backup.ta-tomcat-api"}}
+{{range service "backup.ta-api"}}
     server {{.Node}} {{.Address}}:{{.Port}} backup weight 1 check port {{.Port}}
 {{end}}
 
@@ -50,3 +50,20 @@ backend servers-https
     server {{.Node}} {{.Address}}:{{.Port}} backup weight 1 check port {{.Port}}
 {{end}}
 
+listen admin
+    bind *:9000
+    stats enable
+    mode http
+
+    #This is the virtual URL to access the stats page
+    stats uri /        
+
+    #Authentication realm. This can be set to anything. Escape space characters with a backslash.
+    #stats realm HAProxy\ Statistics 
+
+    #The user/pass you want to use. Change this password!
+    #stats auth admin:passwordhere   
+
+    #This allows you to take down and bring up back end servers.
+    #This will produce an error on older versions of HAProxy.
+    #stats admin if TRUE

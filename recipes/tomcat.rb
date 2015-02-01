@@ -9,10 +9,7 @@
 include_recipe 'test_template::base'
 
 node.set['consul']['service_mode'] = 'client'
-node.set['consul']['bind_addr'] = '192.168.33.30'
-node.set['consul']['advertise_addr'] = '192.168.33.30'
-node.set['consul']['client_address'] = '0.0.0.0'
-node.set['consul']['node_name']	=  "ta-api-#{node['consul']['advertise_addr']}"
+node.set['consul']['node_name'] =  ("api-#{ipaddress}").gsub!('.','-')
 
 include_recipe "test_template::_tomcat"
 
@@ -20,9 +17,9 @@ include_recipe "test_template::_tomcat"
 include_recipe "consul::default"
 include_recipe "consul-template::default"
 
-consul_service_def 'ta-tomcat-api' do
+consul_service_def 'ta-api' do
   port 8080
-  tags ['_sip._tcp']
+  tags [ 'primary' ]
   check(
     interval: '10s',
     script: 'curl localhost:8080 >/dev/null 2>&1'

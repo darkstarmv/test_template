@@ -17,9 +17,11 @@ suites:
     run_list:
       - recipe[test_template::server]
     attributes:
+      test_template:
+        hostip: '192.168.33.10'
       consul:
         servers: [ '192.168.33.10' ]
-  - name: ta-api-lb
+  - name: lb01
     driver:
       name: vagrant
       network:
@@ -27,9 +29,23 @@ suites:
     run_list:
       - recipe[test_template::tomcat_lb]
     attributes:
+      test_template:
+        hostip: '192.168.33.20'
       consul:
         servers: [ '192.168.33.10' ]
-  - name: ta-api
+  - name: lb02
+    driver:
+      name: vagrant
+      network:
+        - ["private_network", {ip: "192.168.33.20"}]
+    run_list:
+      - recipe[test_template::tomcat_lb]
+    attributes:
+      test_template:
+        hostip: '192.168.33.21'
+      consul:
+        servers: [ '192.168.33.10' ]
+  - name: api01
     driver:
       name: vagrant
       network:
@@ -37,5 +53,19 @@ suites:
     run_list:
       - recipe[test_template::tomcat]
     attributes:
+      test_template:
+        hostip: '192.168.33.30'
+      consul:
+        servers: [ '192.168.33.10' ]
+  - name: api02
+    driver:
+      name: vagrant
+      network:
+        - ["private_network", {ip: "192.168.33.30"}]
+    run_list:
+      - recipe[test_template::tomcat]
+    attributes:
+      test_template:
+        hostip: '192.168.33.31'
       consul:
         servers: [ '192.168.33.10' ]

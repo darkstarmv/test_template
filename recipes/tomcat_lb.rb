@@ -9,17 +9,15 @@
 include_recipe 'test_template::base'
 
 node.set['consul']['service_mode'] = 'client'
-node.set['consul']['bind_addr'] = '192.168.33.20'
-node.set['consul']['advertise_addr'] = '192.168.33.20'
-node.set['consul']['client_address'] = '0.0.0.0'
-node.set['consul']['node_name'] =  "ta-api-lb-#{node['consul']['advertise_addr']}"
+node.set['consul']['node_name'] =  ("lb-#{ipaddress}").gsub!('.','-')
 
 include_recipe "consul::default"
 include_recipe "consul-template::default"
 include_recipe "haproxy::install_package"
+
 service "haproxy" do
   supports :status => true, :restart => true, :reload => true
-  action [ :enable, :start ]
+  action [ :enable ]
 end
 template "/etc/haproxy/set_haproxy_maxconn.sh" do
   source 'set_haproxy_maxconn.sh'
@@ -53,7 +51,16 @@ consul_service_def 'ta-api-lb' do
   tags ['_sip._tcp']
   check(
     interval: '10s',
-    script: 'echo ok'
+    script: 'curl localhost:80 >/dev/null 2>&1'
+  )
+  notifies :reload, 'service[haproxy]'
+end
+consul_service_def 'ta-api-lb-admin' do
+  port 9000
+  tags ['_sip._tcp']
+  check(
+    interval: '10s',
+    script: 'curl localhost:9000 >/dev/null 2>&1'
   )
   notifies :reload, 'service[haproxy]'
 end

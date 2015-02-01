@@ -37,7 +37,7 @@ suites:
     driver:
       name: vagrant
       network:
-        - ["private_network", {ip: "192.168.33.20"}]
+        - ["private_network", {ip: "192.168.33.21"}]
     run_list:
       - recipe[test_template::tomcat_lb]
     attributes:
@@ -61,7 +61,7 @@ suites:
     driver:
       name: vagrant
       network:
-        - ["private_network", {ip: "192.168.33.30"}]
+        - ["private_network", {ip: "192.168.33.31"}]
     run_list:
       - recipe[test_template::tomcat]
     attributes:

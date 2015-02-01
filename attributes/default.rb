@@ -13,4 +13,4 @@ default[:dnsmasq][:enable_dns] = true
 #  'enable-tftp' => nil,
 #  'interface' => 'eth1'
 #}
-default['dnsmasq']['dns'] = { 'server' => '/consul./127.0.0.1#8600' }
+default['dnsmasq']['dns'] = { 'server' => '/consul/127.0.0.1#8600' }

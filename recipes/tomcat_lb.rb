@@ -9,7 +9,7 @@
 include_recipe 'test_template::base'
 
 node.set['consul']['service_mode'] = 'client'
-node.set['consul']['node_name'] =  ("lb-#{ipaddress}").gsub!('.','-')
+node.set['consul']['node_name'] =  ("lb-#{node['test_template']['hostip']}").gsub!('.','-')
 
 include_recipe "consul::default"
 include_recipe "consul-template::default"

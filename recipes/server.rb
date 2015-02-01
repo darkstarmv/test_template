@@ -7,7 +7,7 @@
 # All rights reserved - Do Not Redistribute
 #
 include_recipe 'test_template::base'
-node.set['consul']['node_name'] =  ("cserver-#{ipaddress}").gsub!('.','-')
+node.set['consul']['node_name'] =  ("cserver-#{node['test_template']['hostip']}").gsub!('.','-')
 #
 node.set['consul']['service_mode'] = 'bootstrap'
 # need to keep in bootstrap mode for a single server

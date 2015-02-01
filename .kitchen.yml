@@ -12,6 +12,7 @@ suites:
   - name: cserver
     driver:
       name: vagrant
+      vm_hostname: cserver
       network:
         - ["private_network", {ip: "192.168.33.10"}]
     run_list:
@@ -24,6 +25,7 @@ suites:
   - name: lb01
     driver:
       name: vagrant
+      vm_hostname: lb01
       network:
         - ["private_network", {ip: "192.168.33.20"}]
     run_list:
@@ -36,6 +38,7 @@ suites:
   - name: lb02
     driver:
       name: vagrant
+      vm_hostname: lb02
       network:
         - ["private_network", {ip: "192.168.33.21"}]
     run_list:
@@ -48,6 +51,7 @@ suites:
   - name: api01
     driver:
       name: vagrant
+      vm_hostname: api01
       network:
         - ["private_network", {ip: "192.168.33.30"}]
     run_list:
@@ -60,6 +64,7 @@ suites:
   - name: api02
     driver:
       name: vagrant
+      vm_hostname: api02
       network:
         - ["private_network", {ip: "192.168.33.31"}]
     run_list:
